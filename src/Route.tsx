@@ -1,5 +1,6 @@
 import React, {
   Children,
+  isValidElement,
   ReactElement,
   ReactNode,
 } from 'react';
@@ -16,9 +17,12 @@ const Route = ({
   children: ReactNode;
   parentPath?: string;
 }) => {
-  const { path: routerPath, addRoute } = useRouter();
+  const { path: routerPath } = useRouter();
 
-  addRoute(path);
+  const regex = new RegExp(path);
+  if (!regex.test(routerPath)) {
+    return null;
+  }
 
   if (path === routerPath) {
     return component;
@@ -32,21 +36,27 @@ const Route = ({
     }
   }
 
-  // 하위 컴포넌트로 Route 가 있다면 Route 를 return
-  if (
-    Children.count(children) === 1 &&
-    children.props.path &&
-    children.props.component
-  ) {
-    // route 인 경우 routerPath 가 path 를 포함한다면
-    const regex = new RegExp(path);
-    if (regex.test(routerPath)) {
-      return React.cloneElement(
-        children,
-        { parentPath: path, ...children.props },
-        children.children,
-      );
-    }
+  // 하위 컴포넌트로 Route 만 존재해야하며, Route 가 있다면 parentPath 와 함께 반환
+  if (Children.count(children)) {
+    return Children.map(children, child => {
+      if (!isValidElement(child)) {
+        throw new Error('Route component can only have route components as children.');
+      }
+      if (child.type === React.Fragment) {
+        throw new Error('Route component can only have route components as children.');
+      }
+      if (!child.props.path || !child.props.component) {
+        throw new Error('Route component can only have route components as children.');
+      }
+
+      const newPath =
+        !parentPath || parentPath === '/' ? path : parentPath + path;
+
+      return React.cloneElement(child as ReactElement, {
+        parentPath: newPath,
+        ...(child as ReactElement).props,
+      });
+    });
   }
 
   return null;

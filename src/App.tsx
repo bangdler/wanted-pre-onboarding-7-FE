@@ -18,43 +18,53 @@ function App() {
           }
         >
           <Route
-            path={'/2'}
+            path={'/blog'}
             component={
               <div>
                 <Nav />
-                home2
+                blog
               </div>
             }
-          />
-        </Route>
-        <Route
-          path={'/about'}
-          component={
-            <div>
-              <Nav />
-              about
-            </div>
-          }
-        >
+          >
+            <Route
+              path={'/private'}
+              component={
+                <div>
+                  <Nav />
+                  blog private
+                </div>
+              }
+            />
+          </Route>
           <Route
-            path={'/2'}
+            path={'/about'}
             component={
               <div>
                 <Nav />
-                about2
+                about
+              </div>
+            }
+          >
+            <Route
+              path={'/member'}
+              component={
+                <div>
+                  <Nav />
+                  about member
+                </div>
+              }
+            />
+          </Route>
+          <Route
+            path={'/user'}
+            component={
+              <div>
+                <Nav />
+                user
               </div>
             }
           />
         </Route>
-        <Route
-          path={'/user'}
-          component={
-            <div>
-              <Nav />
-              user
-            </div>
-          }
-        />
       </Routes>
     </Router>
   );

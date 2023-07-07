@@ -15,11 +15,19 @@ const Nav = () => {
       <div
         style={{ margin: '20px', pointer: 'cursor' }}
         onClick={() => {
-          push('/2');
+          push('/blog');
         }}
       >
-        홈2로 이동하기
+        blog 로 이동하기
       </div>
+        <div
+            style={{ margin: '20px', pointer: 'cursor' }}
+            onClick={() => {
+                push('/blog/private');
+            }}
+        >
+            blog private 로 이동하기
+        </div>
       <div
         style={{ margin: '20px', pointer: 'cursor' }}
         onClick={() => {
@@ -31,10 +39,10 @@ const Nav = () => {
       <div
         style={{ margin: '20px', pointer: 'cursor' }}
         onClick={() => {
-          push('/about/2');
+          push('/about/member');
         }}
       >
-        about 2로 이동하기
+        about member 로 이동하기
       </div>
       <div
         style={{ margin: '20px', pointer: 'cursor' }}
