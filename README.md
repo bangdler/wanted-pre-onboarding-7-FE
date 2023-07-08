@@ -45,12 +45,21 @@ npm run dev
 - Routes 컴포넌트는 하위 Route 컴포넌트를 확인하여 pathTable 을 채운다.
 - 중첩된 Route 인 경우 부모 Route 의 path 를 추가하여 채운다.
 
+(추가)
+- pathTable 은 { [path]: component } 의 구조를 갖는다.
+- pathTable 을 확인하여 현재 주소에 맞는 컴포넌트를 렌더링한다.
+
 **3) Route**
 
+(기존)
 - props 로 넘어온 path 가 전역 path 와 일치하면 props 의 component 를 렌더링한다.
 - parentPath 가 있을 경우 parentPath 와 결합하여 확인 후 렌더링한다.
 - 하위에 Route 컴포넌트가 있을 경우 하위 Route 컴포넌트를 렌더링한다. 
   - 이 때 자신의 path 를 parentPath 로 변환하여 하위 Route 에 전달한다.
+    
+(변경)
+- Route 는 path, component 를 props 로 가지는 것 외에 역할이 없다.
+- Route 에서 렌더링을 담당할 경우 불필요한 컴포넌트가 생겨 Routes 에서 렌더링하는 것으로 변경됨.
 
 **4) UseRouter**
 - Router 에서 Context 를 통해 전달하는 전역 path, pathTable 을 이용한다.
