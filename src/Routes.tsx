@@ -2,7 +2,7 @@ import React, { Children, isValidElement, ReactNode } from 'react';
 import useRouter from './useRouter';
 
 const Routes = ({ children }: { children: ReactNode }) => {
-  const { addRoute } = useRouter();
+  const { addRoute, findRoute } = useRouter();
 
   const makePathTable = (children, parentPath) => {
     Children.forEach(children, child => {
@@ -21,7 +21,7 @@ const Routes = ({ children }: { children: ReactNode }) => {
       // Route 컴포넌트면 parentPath 와 현재 path 를 더해서 pathTable 에 넣는다.
       const newPath =
         parentPath === '/' ? child.props.path : parentPath + child.props.path;
-      addRoute(newPath);
+      addRoute(newPath, child);
 
       // child 의 children 이 있는 경우 재귀
       if (child.props.children) {
@@ -32,7 +32,7 @@ const Routes = ({ children }: { children: ReactNode }) => {
 
   makePathTable(children, '/');
 
-  return children;
+  return findRoute();
 };
 
 export default Routes;

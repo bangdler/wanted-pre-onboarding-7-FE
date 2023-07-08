@@ -12,12 +12,12 @@ import {
 export const RouteContext = createContext<{
   path: string;
   setPath: Dispatch<SetStateAction<string>>;
-  pathTable: MutableRefObject<Set<string>>;
+  pathTable: MutableRefObject<object>;
 } | null>(null);
 
 const Router = ({ children }: { children: ReactElement }) => {
   const [path, setPath] = useState(location.pathname);
-  const pathTable = useRef<Set<string>>(new Set());
+  const pathTable = useRef<object>({});
 
   const popstateHandler = () => {
     const { pathname } = location;
@@ -30,12 +30,6 @@ const Router = ({ children }: { children: ReactElement }) => {
       window.removeEventListener('popstate', popstateHandler);
     };
   }, []);
-
-  useEffect(() => {
-    if (!pathTable.current.has(path)) {
-      throw Error('no routes matched');
-    }
-  }, [path]);
 
   const value = { path, setPath, pathTable };
 

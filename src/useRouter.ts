@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import {ReactElement, useContext} from 'react';
 import { RouteContext } from './Router';
 
 const useRouter = () => {
@@ -12,11 +12,19 @@ const useRouter = () => {
     context.setPath(url);
   };
 
-  const addRoute = (url: string) => {
-    context.pathTable.current.add(url);
+  const addRoute = (url: string, element:ReactElement) => {
+    context.pathTable.current[url] = element;
   };
 
-  return { path: context.path, push, addRoute };
+  const findRoute = () => {
+    if(context.pathTable.current[context.path]) {
+      return context.pathTable.current[context.path].props.component
+    } else {
+      throw Error('no routes matched');
+    }
+  }
+
+  return { path: context.path, push, addRoute, findRoute };
 };
 
 export default useRouter;
